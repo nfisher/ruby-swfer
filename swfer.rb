@@ -55,6 +55,7 @@ class SwfHeader
 		throw ArgumentError.new( "Invalid file signature." ) if( new_signature != SIGNATURE )
 	end
 
+
 	def compressed=( compressed )
 		if( compressed == COMPRESSION )
 			@compressed = true
@@ -174,22 +175,35 @@ class GulliversExtractor
 	end
 end
 
+
+# Outputs the usage of this script
+#
 def usage
 	puts "Usage: #{$0} FILE"
 	exit
 end
 
+
+COLUMN_DELIMITER = "%15s: %s\n"
+
+
+# Executes the main program loop
+#
 def main
 	usage if ARGV.empty?
 
-	reader = SwfReader.new( ARGV[0] )
+	filename = ARGV[0]
+
+	reader = SwfReader.new( filename )
 	header = reader.read_header
 
-	$\ = "\n"
-	print "Compression: ", header.compressed?
-	print "Version: ", header.version
-	print "Frame Rate: ", header.frame_rate
-	print "Frame Count: ", header.frame_count
+	puts ""
+	printf( COLUMN_DELIMITER, "File", filename )
+	printf( COLUMN_DELIMITER, "Compression", header.compressed? )
+	printf( COLUMN_DELIMITER, "Version", header.version )
+	printf( COLUMN_DELIMITER, "Frame Rate", header.frame_rate )
+	printf( COLUMN_DELIMITER, "Frame Count", header.frame_count )
+	puts ""
 end
 
 main
