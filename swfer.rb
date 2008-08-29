@@ -1,5 +1,7 @@
 #!/opt/local/bin/ruby -w
 
+require 'swfrect'
+
 class SwfReader
 	def initialize( filename )
 		@file = File.new( filename, 'r' )
@@ -73,37 +75,6 @@ class SwfHeader
 end
 
 
-class SwfRect
-	attr :min_x, true
-	attr :min_y, true
-	attr :max_x, true
-	attr :max_y, true
-
-	def required_bytes( ub )
-		ub &&= 0b11111000
-		@bit_block_size = ub >> 3
-
-		( (@bit_block_size * 4 + 5) / 8.0 ).ceil
-	end
-
-
-	def initialize( )
-	end
-
-
-	def bytes=( bytes )
-		@bytes = []
-		bytes.each_byte do |ch|
-			@bytes << ch
-		end
-	end
-
-	private
-	def at( i )
-
-	end
-end
-
 
 class GulliversExtractor
 	BYTE = 1
@@ -171,7 +142,7 @@ class GulliversExtractor
 	private
 	def read_bytes( count, type )
 		tmp = @file.read( count )
-		tmp.unpack( type )
+		tmp.unpack( type ).shift
 	end
 end
 
@@ -184,7 +155,7 @@ def usage
 end
 
 
-COLUMN_DELIMITER = "%15s: %s\n"
+COLUMN_DELIMITER = "%15s = %s\n"
 
 
 # Executes the main program loop

@@ -3,7 +3,7 @@
 require 'test/unit'
 require 'swfrect'
 
-class SwferRectTest < Test::Unit::TestCase
+class SwfRectTest < Test::Unit::TestCase
 	def setup
 		@rect = SwfRect.new
 	end
