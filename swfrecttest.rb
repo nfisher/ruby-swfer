@@ -36,4 +36,10 @@ class SwfRectTest < Test::Unit::TestCase
 		val = 0
 		assert_equal( 1, @rect.required_bytes(val) )
 	end
+
+	def test_default_frame_byte
+		val = 0b01111000
+		@rect.required_bytes( val )
+		assert_equal( 15, @rect.block_size )
+	end
 end

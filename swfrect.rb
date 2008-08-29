@@ -18,6 +18,11 @@ class SwfRect
 	end
 
 
+	def block_size
+		@bit_block_size
+	end
+
+
 	def bytes=( bytes )
 		@bytes = []
 		bytes.each_byte do |ch|
