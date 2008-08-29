@@ -3,12 +3,8 @@ class SwfRect
 	attr :min_y, true
 	attr :max_x, true
 	attr :max_y, true
+
 	attr :nbits
-
-
-	def initialize( )
-
-	end
 
 
 	def required_bytes( ub )

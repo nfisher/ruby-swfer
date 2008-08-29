@@ -8,6 +8,7 @@ class SwfHeader
 	SIGNATURE = 'WS'
 	COMPRESSION = 'C'
 	NOCOMPRESSION = 'F'
+	FRAME_OFFSET = 8
 
 	def initialize
 		@compressed = nil
