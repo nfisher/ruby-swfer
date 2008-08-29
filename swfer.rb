@@ -170,6 +170,7 @@ def main
 
 	puts ""
 	printf( COLUMN_DELIMITER, "File", filename )
+	printf( COLUMN_DELIMITER, "Length", header.length )
 	printf( COLUMN_DELIMITER, "Compression", header.compressed? )
 	printf( COLUMN_DELIMITER, "Version", header.version )
 	printf( COLUMN_DELIMITER, "Frame Rate", header.frame_rate )

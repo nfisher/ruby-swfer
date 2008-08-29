@@ -3,6 +3,7 @@ class SwfRect
 	attr :min_y, true
 	attr :max_x, true
 	attr :max_y, true
+	attr :nbits
 
 
 	def initialize( )
@@ -12,16 +13,10 @@ class SwfRect
 
 	def required_bytes( ub )
 		ub &= 0b11111000
-		@bit_block_size = ub >> 3
+		@nbits = ub >> 3
 
-		( (@bit_block_size * 4 + 5) / 8.0 ).ceil
+		( (@nbits * 4 + 5) / 8.0 ).ceil
 	end
-
-
-	def block_size
-		@bit_block_size
-	end
-
 
 	def bytes=( bytes )
 		@bytes = []
