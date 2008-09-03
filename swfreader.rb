@@ -52,7 +52,7 @@ class SwfReader
 	end
 
 	private
-	def get_bytes( count )
+	def read_bytes( count )
 		@file.read( count )
 	end
 
@@ -61,7 +61,7 @@ class SwfReader
 		@file.seek( 0, IO::SEEK_END )
 		end_pos = @file.tell
 		@file.pos = pos
-		get_bytes( end_pos - pos )
+		read_bytes( end_pos - pos )
 	end
 end
 
