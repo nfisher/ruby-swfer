@@ -31,6 +31,8 @@ def main
 	printf( COLUMN_DELIMITER, "Version", header.version )
 	printf( COLUMN_DELIMITER, "Frame Rate", header.frame_rate )
 	printf( COLUMN_DELIMITER, "Frame Count", header.frame_count )
+	printf( COLUMN_DELIMITER, "Frame Width", header.frame_size.max_x / 20 )
+	printf( COLUMN_DELIMITER, "Frame Height", header.frame_size.max_y / 20 )
 	puts ""
 end
 

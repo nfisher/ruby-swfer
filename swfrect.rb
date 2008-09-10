@@ -33,44 +33,36 @@ class SwfRect
 	def bytes=( bytes )
 		@bytes = 0
 
-		bits = bytes.unpack( "B*" ).shift
+		len = bytes.size
+		i = 0
 
-		bits.each_byte do |bit|
-			@bytes |= 1 if bit == 49
-			@bytes << 1
+		values = bytes.unpack( "C*" )
+		values.each do |value|
+			@bytes |= value
+			@bytes = @bytes << BYTE_SIZE unless (i += 1) == len
 		end
-		puts @bytes
 
 		@min_x = at( 0 )
-		puts "min x: #{@min_x}"
-
 		@max_x = at( 1 )
-		puts "max x: #{@max_x/20}"
-
 		@min_y = at( 2 )
-		puts "min y: #{@min_y}"
-
 		@max_y = at( 3 )
-		puts "max y: #{@max_y/20}"
 	end
 
 	private
 	def at( i )
 		value = 0
-		# Bignum appears to buffer on 4 byte boundaries so 9 bytes is padded with
-		# zeros to 12 bytes
-		initial_offset = (@bytes.size - required_bytes) * BYTE_SIZE + NBITS_FIELD_LENGTH
-		first =	initial_offset + ( i * @nbits ) 
-		last = first + @nbits
+
+		initial_offset = required_bytes * BYTE_SIZE - NBITS_FIELD_LENGTH
+
+		first =	initial_offset - ( i * @nbits ) 
+		last = first - @nbits
 
 		sign_bit = @bytes[first]
 
-		(first...last).each do |i|
+		(last...(first-1)).to_a.reverse_each do |i|
 			value |= @bytes[i]
-			value = value << 1
+			value = value << 1 unless i == last
 		end
-
-		value *= -1 if sign_bit == 1
 
 		value
 	end
