@@ -49,6 +49,7 @@ class SwfRect
 	end
 
 	private
+
 	def at( i )
 		value = 0
 

@@ -8,7 +8,6 @@ class SwfReader
 	WORD = 2
 	DWORD = 4
 	QWORD = 8
-	SIGNATURE_LENGTH = 3
 
 	def initialize( filename )
 		@file = File.new( filename, 'r' )
@@ -20,51 +19,69 @@ class SwfReader
 
 	def read_header
 		header = SwfHeader.new
-		header.signature =  read_bytes(SIGNATURE_LENGTH)
+		header.signature =  read_bytes(SwfHeader::SIGNATURE_LENGTH)
 		header.version = @extractor.ui8( read_bytes(BYTE) )
 		header.length = @extractor.little_ui32( read_bytes(DWORD) )
 
-		# Sneaky buggers don't mention that everything after the length is
-		# compressed in a CWS signatured file.
-		len = @contents.size
-		@contents = decompress(@contents[QWORD...len]) if header.compressed?
+		if header.compressed?
+			len = @contents.size
+			compressed_content = @contents.slice!( SwfHeader::FRAME_OFFSET...len )
+			puts "size: #{@contents.size}"
+			@contents += inflate( compressed_content )
+		end
+
 
 		header.frame_size = read_rect
 		header.frame_rate = @extractor.little_ui16( read_bytes(WORD) )
 		header.frame_count = @extractor.little_ui16( read_bytes(WORD) )
 
-		throw Error if @contents.length != (header.length - SwfHeader::FRAME_OFFSET)
-
 		return header
 	end
 
 	def read_rect
-		ub = @contents[0]
-
+		ub = read_bytes(BYTE)
 		rect = SwfRect.new
 		rect.nbits = ub
-		len = rect.required_bytes
-		rect.bytes = @contents[0...len]
+		puts ub
+		rect.bytes = read_bytes( rect.required_bytes )
 
-		return rect
+		rect
 	end
 
-	def decompress( compressed_contents )
+	def read_tag
+	end
+
+	def inflate( compressed_contents )
 		zstream = Zlib::Inflate.new
-		decompressed_contents = zstream.inflate( compressed_contents )
+		inflated_contents = zstream.inflate( compressed_contents )
 		zstream.finish
 		zstream.close
-		decompressed_contents
+		inflated_contents
+	end
+
+	def pos=( new_pos )
+		@pos = new_pos
+	end
+
+	def pos
+		@pos
 	end
 
 	private
+
+	def reset_pos
+		pos = 0
+	end
+
 	def read_bytes( count )
 		read_whole_file_and_close if @contents.nil?
 
-		cur = @pos
+		# if a byte only use the current position otherwise apply a range extraction
+		range = cur = @pos
 		@pos += count
+		range = cur...@pos unless count == BYTE
 
-		@contents[cur...@pos]
+		@contents[range]
 	end
 
 	def read_whole_file_and_close
