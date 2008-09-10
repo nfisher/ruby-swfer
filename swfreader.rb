@@ -40,10 +40,10 @@ class SwfReader
 
 	def decompress( compressed_contents )
 		zstream = Zlib::Inflate.new
-		@decompressed_contents = zstream.inflate( compressed_contents )
+		decompressed_contents = zstream.inflate( compressed_contents )
 		zstream.finish
 		zstream.close
-		@decompressed_contents
+		decompressed_contents
 	end
 
 	private
