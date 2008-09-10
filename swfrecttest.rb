@@ -53,9 +53,18 @@ class SwfRectTest < Test::Unit::TestCase
 	end
 
 	def test_default_frame
-		val = 0b01111000000000000000011111010000000000000000000000011111010000000
-		last = val.size * 8
-		# @rect.nbits = val[0]
-		# assert_equal( 15, @rect.nbits )
+		raw_bytes = [ 0x78, 0x00, 0x06, 0xD6, 0x00, 0x00, 0x13, 0x88, 0x00 ]
+		string_bytes = raw_bytes.pack( "c*" )
+
+		@rect.nbits = string_bytes[0]
+		assert_equal( 15, @rect.nbits )
+
+		@rect.bytes = string_bytes
+
+		assert_equal( 0, @rect.min_x )
+		assert_equal( 0, @rect.min_y )
+
+		assert_equal( 700*20, @rect.max_x )
+		assert_equal( 500*20, @rect.max_y )
 	end
 end
