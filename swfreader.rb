@@ -20,7 +20,7 @@ class SwfReader
 	def read_header
 		header = SwfHeader.new
 		header.signature =  read_bytes(SwfHeader::SIGNATURE_LENGTH)
-		header.version = @extractor.ui8( read_bytes(BYTE) )
+		header.version = read_bytes(BYTE)
 		header.length = @extractor.little_ui32( read_bytes(DWORD) )
 
 		if header.compressed?

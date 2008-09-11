@@ -47,6 +47,7 @@ class GulliversExtractor
 	end
 
 	private
+
 	def convert_bytes( type, tmp = nil )
 		tmp.unpack( type ).shift
 	end
