@@ -26,10 +26,10 @@ class SwfReader
 		if header.compressed?
 			len = @contents.size
 			compressed_content = @contents.slice!( SwfHeader::FRAME_OFFSET...len )
-			puts "size: #{@contents.size}"
 			@contents += inflate( compressed_content )
 		end
 
+		throw RuntimeError.new( "<#{header.length}> expected but was <#{@contents.size}>" ) if @contents.size != header.length
 
 		header.frame_size = read_rect
 		header.frame_rate = @extractor.little_ui16( read_bytes(WORD) )
@@ -39,10 +39,9 @@ class SwfReader
 	end
 
 	def read_rect
-		ub = read_bytes(BYTE)
+		ub = @contents[SwfHeader::FRAME_OFFSET]
 		rect = SwfRect.new
 		rect.nbits = ub
-		puts ub
 		rect.bytes = read_bytes( rect.required_bytes )
 
 		rect
