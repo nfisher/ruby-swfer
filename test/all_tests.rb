@@ -2,8 +2,9 @@
 
 require 'test/unit/ui/console/testrunner'
 require 'test/unit/testsuite'
-require 'swfertest'
-require 'swfrecttest'
+require 'test/test_helper.rb'
+
+Dir['**/*_test.rb'].each { |test_case| require test_case }
 
 class SwferTestSuite
 	def self.suite

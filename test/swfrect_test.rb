@@ -1,8 +1,5 @@
 #!/opt/local/bin/ruby -w
 
-require 'test/unit'
-require 'swfrect'
-
 class SwfRectTest < Test::Unit::TestCase
 	def setup
 		@rect = SwfRect.new
