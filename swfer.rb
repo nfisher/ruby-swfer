@@ -25,6 +25,7 @@ def main
 	header = reader.read_header
 
 	puts ""
+	puts "============ Header Details ============"
 	printf( COLUMN_DELIMITER, "File", filename )
 	printf( COLUMN_DELIMITER, "Length", header.length )
 	printf( COLUMN_DELIMITER, "Compression", header.compressed? )
@@ -35,6 +36,7 @@ def main
 	printf( COLUMN_DELIMITER, "Frame Y", header.frame_size.min_y / 20 )
 	printf( COLUMN_DELIMITER, "Frame Width", header.frame_size.max_x / 20 )
 	printf( COLUMN_DELIMITER, "Frame Height", header.frame_size.max_y / 20 )
+	puts "========================================"
 	puts ""
 end
 

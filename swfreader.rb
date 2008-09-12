@@ -39,10 +39,10 @@ class SwfReader
 	end
 
 	def read_rect
-		ub = @contents[SwfHeader::FRAME_OFFSET]
+		ub = read_bytes(BYTE) #@contents[SwfHeader::FRAME_OFFSET]
 		rect = SwfRect.new
 		rect.nbits = ub
-		rect.bytes = read_bytes( rect.required_bytes )
+		rect.bytes = ub.chr + read_bytes( rect.required_bytes - 1 )
 
 		rect
 	end
