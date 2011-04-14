@@ -8,7 +8,7 @@ Dir['**/*_test.rb'].each { |test_case| require test_case }
 
 class SwferTestSuite
 	def self.suite
-		suite = Test::Unit::TestSuite.new
+		suite = Test::Unit::TestSuite.new "Ruby SWFer"
 		suite << SwferTest.suite
 		suite << SwfRectTest.suite
 
